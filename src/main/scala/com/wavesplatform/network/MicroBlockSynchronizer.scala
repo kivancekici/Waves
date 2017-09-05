@@ -11,7 +11,7 @@ import scorex.utils.{ScorexLogging, SynchronizedOne}
 import scala.concurrent.duration.FiniteDuration
 
 @Sharable
-class MircoBlockSynchronizer(history: NgHistory)
+class MicroBlockSynchronizer(history: NgHistory)
   extends ChannelInboundHandlerAdapter with ScorexLogging with SynchronizedOne {
 
   private val awaitingResponse = Synchronized(scala.collection.mutable.Map.empty[BlockId, Channel])
@@ -47,7 +47,7 @@ class MircoBlockSynchronizer(history: NgHistory)
   }
 }
 
-object MircoBlockSynchronizer {
+object MicroBlockSynchronizer {
   private val microBlockInvStats = Kamon.metrics.registerCounter("micro-inv")
   private val microBlockReceiveLagStats = Kamon.metrics.registerHistogram(
     name = "micro-receive-lag",

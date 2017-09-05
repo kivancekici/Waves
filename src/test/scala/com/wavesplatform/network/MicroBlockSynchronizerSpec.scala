@@ -23,12 +23,6 @@ class MicroBlockSynchronizerSpec extends FreeSpec
   with GeneratorDrivenPropertyChecks
   with TransactionGen {
 
-  private val settings = MicroBlockSynchronizer.Settings(
-    waitResponseTimeout = 500.millis,
-    processedMicroBlocksCacheTimeout = 1.second,
-    invCacheTimeout = 1.second
-  )
-
   private implicit val pc: PatienceConfig = PatienceConfig(
     timeout = 1.second,
     interval = 50.millis
@@ -41,7 +35,7 @@ class MicroBlockSynchronizerSpec extends FreeSpec
     val history = Mockito.mock(classOf[NgHistory])
     Mockito.doReturn(Some(lastBlockSig)).when(history).lastBlockId()
 
-    val channel = new EmbeddedChannel(new MicroBlockSynchronizer(settings, history))
+    val channel = new EmbeddedChannel(new MicroBlockSynchronizer(history))
     channel.writeInbound(MicroBlockInv(nextBlockSig, lastBlockSig, System.currentTimeMillis()))
     channel.flushInbound()
 
@@ -60,7 +54,7 @@ class MicroBlockSynchronizerSpec extends FreeSpec
     val history = Mockito.mock(classOf[NgHistory])
     Mockito.doReturn(Some(lastBlockSig)).when(history).lastBlockId()
 
-    val synchronizer = new MicroBlockSynchronizer(settings, history)
+    val synchronizer = new MicroBlockSynchronizer(history)
 
     val channel1 = new EmbeddedChannel(synchronizer)
     val channel2 = new EmbeddedChannel(synchronizer)
