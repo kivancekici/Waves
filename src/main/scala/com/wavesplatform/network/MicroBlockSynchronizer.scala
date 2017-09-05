@@ -8,6 +8,8 @@ import scorex.block.Block.BlockId
 import scorex.transaction.NgHistory
 import scorex.utils.{ScorexLogging, SynchronizedOne}
 
+import scala.concurrent.duration.FiniteDuration
+
 @Sharable
 class MircoBlockSynchronizer(history: NgHistory)
   extends ChannelInboundHandlerAdapter with ScorexLogging with SynchronizedOne {
@@ -54,4 +56,9 @@ object MircoBlockSynchronizer {
 
   private val notLastMicroblockStats = Kamon.metrics.registerCounter("micro-not-last")
   private val unknownMicroblockStats = Kamon.metrics.registerCounter("micro-unknown")
+
+  case class Settings(waitResponseTimeout: FiniteDuration,
+                      processedMicroBlocksCacheTimeout: FiniteDuration,
+                      invCacheTimeout: FiniteDuration)
+
 }
