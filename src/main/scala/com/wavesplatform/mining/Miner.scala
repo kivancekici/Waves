@@ -206,7 +206,7 @@ class Miner(
 object Miner extends ScorexLogging {
 
   val MinimalGenerationOffsetMillis: Long = 1001
-  val MaxTransactionsPerMicroblock: Int = 255
+  val MaxTransactionsPerMicroblock: Int = 512
 
   def calcOffset(timeService: Time, calculatedTimestamp: Long, minimalBlockGenerationOffset: FiniteDuration): FiniteDuration = {
     val calculatedGenerationTimestamp = (Math.ceil(calculatedTimestamp / 1000.0) * 1000).toLong
