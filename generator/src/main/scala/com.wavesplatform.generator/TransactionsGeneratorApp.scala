@@ -122,7 +122,7 @@ object TransactionsGeneratorApp extends App with ScoptImplicits with FicusImplic
         sender
           .send(channel, messages: _*)
           .andThen {
-            case Success(_) => log.info(s"[$node] ${messages.size} Transactions had been sent")
+            case Success(_) => log.info(s"[$node] ${messages.size} transactions had been sent")
             case Failure(e) => log.error(s"[$node] An error during sending transations", e)
           }
           .map { _ =>
