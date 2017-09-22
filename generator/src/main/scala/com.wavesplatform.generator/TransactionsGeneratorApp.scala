@@ -68,6 +68,9 @@ object TransactionsGeneratorApp extends App with ScoptImplicits with FicusImplic
         },
         opt[Double]("grow-adder").abbr("g").optional().action { (x, c) =>
           c.copy(dynWide = c.dynWide.copy(growAdder = x))
+        },
+        opt[Int]("max").abbr("m").optional().action { (x, c) =>
+          c.copy(dynWide = c.dynWide.copy(maxTxsPerRequest = Some(x)))
         }
       )
   }
@@ -119,7 +122,7 @@ object TransactionsGeneratorApp extends App with ScoptImplicits with FicusImplic
         sender
           .send(channel, messages: _*)
           .andThen {
-            case Success(_) => log.info(s"[$node] Transactions had been sent")
+            case Success(_) => log.info(s"[$node] ${messages.size} Transactions had been sent")
             case Failure(e) => log.error(s"[$node] An error during sending transations", e)
           }
           .map { _ =>
